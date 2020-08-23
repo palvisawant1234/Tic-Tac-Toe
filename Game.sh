@@ -21,9 +21,28 @@ function toss() {
 	if [ $R -eq 1 ]
 	then
 		echo "Player win the toss!!!"
+		read -p "Enter letter X or O:" CHOICE
+		if [[ "$CHOICE" == "X" ]] 
+		then
+			PLAYER=$CHOICE
+			COMPUTER="O"
+		else
+			PLAYER=$CHOICE
+			COMPUTER="X"
+		fi
 	else
 		echo "Computer win the toss!!!"
-	
+		computerChoice=$((RANDOM % 2))
+        	if [ $computerChoice -eq 1 ]
+		then
+			COMPUTER="X"
+			PLAYER="O" 
+		else
+			COMPUTER="O"
+			PLAYER="X"
+		fi
 	fi
 }
 toss
+echo "Players choice:$PLAYER"
+echo "Computers choice:$COMPUTER"
