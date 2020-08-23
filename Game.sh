@@ -38,11 +38,11 @@ function toss() {
 		read -p "Enter letter X or O:" CHOICE
 		if [[ "$CHOICE" == "X" ]] 
 		then
-			PLAYER=$CHOICE
-			COMPUTER="O"
+			player=$CHOICE
+			computer="O"
 		else
-			PLAYER=$CHOICE
-			COMPUTER="X"
+			player=$CHOICE
+			computer="X"
 		fi
 		switchPlayer=0
 	else
@@ -50,16 +50,16 @@ function toss() {
 		computerChoice=$((RANDOM % 2))
         	if [ $computerChoice -eq 1 ]
 		then
-			COMPUTER="X"
-			PLAYER="O" 
+			computer="X"
+			player="O" 
 		else
-			COMPUTER="O"
-			PLAYER="X"
+			computer="O"
+			player="X"
 		fi
 		switchPlayer=1
 	fi
-	echo "Players choice:$PLAYER"
-	echo "Computers choice:$COMPUTER"
+	echo "Players choice:$player"
+	echo "Computers choice:$computer"
 	echo "Board:"
 	board
 }
@@ -75,11 +75,11 @@ function winCondition() {
 	   ([[ "${position[1]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
 	   ([[ "${position[3]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]]) 
 	then
-		if [[ "$val" == "$PLAYER" ]]
+		if [[ "$val" == "$player" ]]
 		then
 			echo "Player wins..."
 			exit
-		elif [[ "$val" == "$COMPUTER" ]]
+		elif [[ "$val" == "$computer" ]]
 		then
 			echo "Computer wins..."
 			exit
@@ -203,7 +203,10 @@ if [ ${arr[1]} -eq 0 ]
 					then
 						computer_pos=5
 					else
-						computer_pos=0
+						while [ ${arr[$computer_pos]} -ne 0 ] 
+			                        do
+                        			        computer_pos=$(((RANDOM % 9) + 1))
+                       				done
 fi
 }
 
@@ -217,8 +220,8 @@ do
 		read -p "Enter the position:" pos
 		if [ ${arr[$pos]} -eq 0 ]
 		then
-			position[$pos]=$PLAYER
-			val=$PLAYER
+			position[$pos]=$player
+			val=$player
 			board
 			winCondition
 			echo "           "
@@ -229,8 +232,8 @@ do
 			while [ ${arr[$pos]} -ne 0 ]
 			do
 				read -p "Enter available position:" pos
-				position[$pos]=$PLAYER
-				val=$PLAYER
+				position[$pos]=$player
+				val=$player
 				board
 				winCondition
 				echo "           "
@@ -242,8 +245,8 @@ do
 		switchPlayer=0
 		firstCondition
 		echo "Computer choose : $computer_pos"
-		position[$computer_pos]=$COMPUTER
-		val=$COMPUTER
+		position[$computer_pos]=$computer
+		val=$computer
 		board
 		winCondition
 		echo "           "
