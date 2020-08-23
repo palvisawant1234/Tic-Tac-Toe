@@ -182,9 +182,28 @@ function secondCondition() {
 										then
 											computer_pos=9
 										else
-												computer_pos=0
+												corner
 	fi
 }
+
+function corner(){
+if [ ${arr[1]} -eq 0 ]
+	then
+		computer_pos=1
+	elif [ ${arr[3]} -eq 0 ]
+		then
+			computer_pos=3
+		elif [ ${arr[7]} -eq 0 ]
+			then
+				computer_pos=7
+			elif [ ${arr[9]} -eq 0 ]
+				then
+					computer_pos=9
+					else
+						computer_pos=0
+fi
+}
+
 
 count=0
 while [ $count -lt 9 ]
