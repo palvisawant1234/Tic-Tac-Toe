@@ -13,3 +13,17 @@ function board() {
 	echo " ${position[7]} | ${position[8]} | ${position[9]}"
 }
 board
+
+echo "Let's begin with a toss to check who plays first"
+
+function toss() {
+	R=$((RANDOM % 2))
+	if [ $R -eq 1 ]
+	then
+		echo "Player win the toss!!!"
+	else
+		echo "Computer win the toss!!!"
+	
+	fi
+}
+toss
