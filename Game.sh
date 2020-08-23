@@ -199,6 +199,9 @@ if [ ${arr[1]} -eq 0 ]
 			elif [ ${arr[9]} -eq 0 ]
 				then
 					computer_pos=9
+				elif [ ${arr[5]} -eq 0 ]
+					then
+						computer_pos=5
 					else
 						computer_pos=0
 fi
