@@ -134,9 +134,58 @@ function firstCondition() {
 								then
 									computer_pos=9
 								else
-									computer_pos=0
+									secondCondition
 	fi
 }
+
+function secondCondition() {
+        if ([[ "${position[2]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[1]} -eq 0 ]) ||
+	   ([[ "${position[4]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[1]} -eq 0 ]) ||
+	   ([[ "${position[5]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[1]} -eq 0 ])
+	        then
+			computer_pos=1
+        	elif ([[ "${position[5]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[2]} -eq 0 ]) ||
+	     	([[ "${position[1]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[2]} -eq 0 ])
+			then
+				computer_pos=2
+			elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[2]}" == "$player" ]] && [ ${arr[3]} -eq 0 ]) ||
+	        	([[ "${position[5]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[3]} -eq 0 ]) ||
+        	     	([[ "${position[6]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[3]} -eq 0 ])
+				then
+					computer_pos=3
+				elif ([[ "${position[5]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[4]} -eq 0 ]) ||
+			     	([[ "${position[1]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[4]} -eq 0 ])
+        				then
+						computer_pos=4
+					elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
+                     		     	([[ "${position[2]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
+                     		     	([[ "${position[3]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
+				     	([[ "${position[4]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[5]} -eq 0 ])
+						then
+							computer_pos=5
+						elif ([[ "${position[4]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[6]} -eq 0 ]) ||
+					     	([[ "${position[3]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[6]} -eq 0 ])
+							then
+								computer_pos=6
+							elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[4]}" == "$player" ]] && [ ${arr[7]} -eq 0 ]) ||
+                   				     	([[ "${position[5]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[7]} -eq 0 ]) ||
+                  				     	([[ "${position[8]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[7]} -eq 0 ])
+								then
+									computer_pos=7
+								elif ([[ "${position[2]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[8]} -eq 0 ]) ||
+							     	([[ "${position[7]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[8]} -eq 0 ])
+									then
+										computer_pos=8
+									elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[9]} -eq 0 ]) ||
+                                                    		     	([[ "${position[7]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[9]} -eq 0 ]) ||
+                                                 		     	([[ "${position[3]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[9]} -eq 0 ])
+										then
+											computer_pos=9
+										else
+												computer_pos=0
+	fi
+}
+
 count=0
 while [ $count -lt 9 ]
 do
