@@ -14,6 +14,11 @@ function board() {
 }
 board
 
+for (( i=1 ; i<=9 ; i++ ))
+do
+        position[$i]="_"
+done
+
 echo "Let's begin with a toss to check who plays first"
 
 function toss() {
@@ -46,3 +51,5 @@ function toss() {
 toss
 echo "Players choice:$PLAYER"
 echo "Computers choice:$COMPUTER"
+echo "Board:"
+board
