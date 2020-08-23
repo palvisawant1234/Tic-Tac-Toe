@@ -47,9 +47,34 @@ function toss() {
 			PLAYER="X"
 		fi
 	fi
+	echo "Players choice:$PLAYER"
+	echo "Computers choice:$COMPUTER"
+	echo "Board:"
+	board
 }
 toss
-echo "Players choice:$PLAYER"
-echo "Computers choice:$COMPUTER"
-echo "Board:"
-board
+
+function win() {
+	if ([[ "${position[1]}" == "$val" ]] && [[ "${position[2]}" == "$val" ]] && [[ "${position[3]}" == "$val" ]]) ||
+	   ([[ "${position[4]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[6]}" == "$val" ]]) ||
+	   ([[ "${position[7]}" == "$val" ]] && [[ "${position[8]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
+	   ([[ "${position[1]}" == "$val" ]] && [[ "${position[4]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]]) ||
+	   ([[ "${position[2]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[8]}" == "$val" ]]) ||
+	   ([[ "${position[3]}" == "$val" ]] && [[ "${position[6]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
+	   ([[ "${position[1]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
+	   ([[ "${position[3]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]]) 
+	then
+		if [[ "$val" == "$PLAYER" ]]
+		then
+			echo "Player wins..."
+			exit
+		elif [[ "$val" == "$COMPUTER" ]]
+		then
+			echo "Computer wins..."
+			exit
+		else
+			echo "No one wins..."
+			exit
+		fi
+	fi
+}
