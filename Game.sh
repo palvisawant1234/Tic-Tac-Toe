@@ -3,10 +3,12 @@
 echo "Welcome to Tic-Tac-Toe game"
 declare -A position
 switchPlayer=0
+
 for (( i=1 ; i<=9 ; i++ ))
 do
 	position[$i]=$i
 done
+
 echo " Refer cell number as the position of the board!"
 function board() {
 	echo " ${position[1]} | ${position[2]} | ${position[3]}"
@@ -88,6 +90,53 @@ function winCondition() {
 	fi
 }
 
+function firstCondition() {
+        if ([[ "${position[2]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ]) ||
+	   ([[ "${position[4]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ]) ||
+	   ([[ "${position[5]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ])
+        then
+	     computer_pos=1
+        elif ([[ "${position[5]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[2]} -eq 0 ]) ||
+	     ([[ "${position[1]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[2]} -eq 0 ])
+		then
+			computer_pos=2
+		elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[2]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ]) ||
+	             ([[ "${position[5]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ]) ||
+        	     ([[ "${pos[6]}" == "$computer" ]] && [[ "${pos[9]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ])
+			then
+				computer_pos=3
+			elif ([[ "${position[5]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[4]} -eq 0 ]) ||
+			     ([[ "${position[1]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[4]} -eq 0 ])
+        			then
+					computer_pos=4
+				elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
+                     		     ([[ "${position[2]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
+                     		     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
+				     ([[ "${position[4]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ])
+					then
+						computer_pos=5
+					elif ([[ "${position[4]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[6]} -eq 0 ]) ||
+					     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[6]} -eq 0 ])
+						then
+							computer_pos=6
+						elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[4]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ]) ||
+                   				     ([[ "${position[5]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ]) ||
+                  				     ([[ "${position[8]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ])
+							then
+								computer_pos=7
+							elif ([[ "${position[2]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[8]} -eq 0 ]) ||
+							     ([[ "${position[7]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[8]} -eq 0 ])
+								then
+									computer_pos=8
+								elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ]) ||
+                                                   		     ([[ "${position[7]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ]) ||
+                                                 		     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ])
+								then
+									computer_pos=9
+								else
+									computer_pos=0
+	fi
+}
 count=0
 while [ $count -lt 9 ]
 do
@@ -120,6 +169,15 @@ do
 		fi
 	else
 		switchPlayer=0
+		firstCondition
+		echo "Computer choose : $computer_pos"
+		position[$computer_pos]=$COMPUTER
+		val=$COMPUTER
+		board
+		winCondition
+		echo "           "
+		echo "           "
+		arr[$computer_pos]=1
 	fi
 	count=$(($count + 1))
 done
