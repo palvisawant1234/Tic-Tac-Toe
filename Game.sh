@@ -2,6 +2,7 @@
 
 echo "Welcome to Tic-Tac-Toe game"
 declare -A position
+switchPlayer=0
 for (( i=1 ; i<=9 ; i++ ))
 do
 	position[$i]=$i
@@ -17,6 +18,12 @@ board
 for (( i=1 ; i<=9 ; i++ ))
 do
         position[$i]="_"
+done
+
+declare -a arr
+for (( j=1 ; j<=9 ; j++ ))
+do
+	arr[$j]=0
 done
 
 echo "Let's begin with a toss to check who plays first"
@@ -35,6 +42,7 @@ function toss() {
 			PLAYER=$CHOICE
 			COMPUTER="X"
 		fi
+		switchPlayer=0
 	else
 		echo "Computer win the toss!!!"
 		computerChoice=$((RANDOM % 2))
@@ -46,6 +54,7 @@ function toss() {
 			COMPUTER="O"
 			PLAYER="X"
 		fi
+		switchPlayer=1
 	fi
 	echo "Players choice:$PLAYER"
 	echo "Computers choice:$COMPUTER"
@@ -54,7 +63,7 @@ function toss() {
 }
 toss
 
-function win() {
+function winCondition() {
 	if ([[ "${position[1]}" == "$val" ]] && [[ "${position[2]}" == "$val" ]] && [[ "${position[3]}" == "$val" ]]) ||
 	   ([[ "${position[4]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[6]}" == "$val" ]]) ||
 	   ([[ "${position[7]}" == "$val" ]] && [[ "${position[8]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
@@ -78,3 +87,39 @@ function win() {
 		fi
 	fi
 }
+
+count=0
+while [ $count -lt 9 ]
+do
+	if [ $switchPlayer -eq 0 ]
+	then
+		switchPlayer=1
+		read -p "Enter the position:" pos
+		if [ ${arr[$pos]} -eq 0 ]
+		then
+			position[$pos]=$PLAYER
+			val=$PLAYER
+			board
+			winCondition
+			echo "           "
+			echo "           "
+                	arr[$pos]=1
+		else
+			board
+			while [ ${arr[$pos]} -ne 0 ]
+			do
+				read -p "Enter available position:" pos
+				position[$pos]=$PLAYER
+				val=$PLAYER
+				board
+				winCondition
+				echo "           "
+				echo "           "
+				arr[$pos]=1
+			done
+		fi
+	else
+		switchPlayer=0
+	fi
+	count=$(($count + 1))
+done
