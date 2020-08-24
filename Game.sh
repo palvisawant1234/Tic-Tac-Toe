@@ -4,11 +4,13 @@ echo "Welcome to Tic-Tac-Toe game"
 declare -A position
 switchPlayer=0
 
+#initialize position for each cell in the board
 for (( i=1 ; i<=9 ; i++ ))
 do
         position[$i]=$i
 done
 
+#print the boaard
 echo " Refer cell number as the position of the board!"
 function board() {
         echo " ${position[1]} | ${position[2]} | ${position[3]}"
@@ -17,17 +19,20 @@ function board() {
 }
 board
 
+#make the position of each cell empty
 for (( i=1 ; i<=9 ; i++ ))
 do
         position[$i]="_"
 done
 
+#initialize value for each cell
 declare -a arr
 for (( j=1 ; j<=9 ; j++ ))
 do
         arr[$j]=0
 done
 
+#toss to check who plays first
 echo "Let's begin with a toss to check who plays first"
 
 function toss() {
@@ -65,6 +70,7 @@ function toss() {
 }
 toss
 
+#possible winning condition for the participants
 function winCondition() {
         for (( j=1 ; j<=7 ; j=$(($j+3)) ))
         do
@@ -90,6 +96,7 @@ function winCondition() {
         fi
 }
 
+#condition to check straight line winning conditions 
 function firstCondition() {
         for (( j=1 ; j<=7 ; j=$(($j+3)) ))
         do
@@ -133,6 +140,10 @@ function firstCondition() {
         fi
 }
 
+<<<<<<< HEAD
+=======
+#check daigonal winning contions
+>>>>>>> UC13-Minimizing_the_code
 function daigonalWinCondition() {
         if ([[ "${position[1]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]] && [ ${arr[5]} -eq 0 ]) ||
            ([[ "${position[3]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]] && [ ${arr[5]} -eq 0 ])
@@ -161,6 +172,7 @@ function daigonalWinCondition() {
                 block=1
                 blockCondition
         fi
+<<<<<<< HEAD
 }
 
 function blockCondition(){
@@ -170,8 +182,21 @@ function blockCondition(){
         then
                 corner
         fi
+=======
+>>>>>>> UC13-Minimizing_the_code
 }
 
+#blocking condition if player is winning
+function blockCondition(){
+        val=$player
+        firstCondition
+        if (( counter == 0 ))
+        then
+                corner
+        fi
+}
+
+#choosing corner,center or any of the side if above conditions didn't satisfy
 function corner(){
 if [ ${arr[1]} -eq 0 ]
         then
@@ -196,6 +221,10 @@ if [ ${arr[1]} -eq 0 ]
 fi
 }
 
+<<<<<<< HEAD
+=======
+#start of main code
+>>>>>>> UC13-Minimizing_the_code
 count=0
 while [ $count -lt 9 ]
 do
