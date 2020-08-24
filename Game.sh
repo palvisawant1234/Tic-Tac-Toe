@@ -6,14 +6,14 @@ switchPlayer=0
 
 for (( i=1 ; i<=9 ; i++ ))
 do
-	position[$i]=$i
+        position[$i]=$i
 done
 
 echo " Refer cell number as the position of the board!"
 function board() {
-	echo " ${position[1]} | ${position[2]} | ${position[3]}"
-	echo " ${position[4]} | ${position[5]} | ${position[6]}"
-	echo " ${position[7]} | ${position[8]} | ${position[9]}"
+        echo " ${position[1]} | ${position[2]} | ${position[3]}"
+        echo " ${position[4]} | ${position[5]} | ${position[6]}"
+        echo " ${position[7]} | ${position[8]} | ${position[9]}"
 }
 board
 
@@ -25,233 +25,220 @@ done
 declare -a arr
 for (( j=1 ; j<=9 ; j++ ))
 do
-	arr[$j]=0
+        arr[$j]=0
 done
 
 echo "Let's begin with a toss to check who plays first"
 
 function toss() {
-	R=$((RANDOM % 2))
-	if [ $R -eq 1 ]
-	then
-		echo "Player win the toss!!!"
-		read -p "Enter letter X or O:" CHOICE
-		if [[ "$CHOICE" == "X" ]] 
-		then
-			player=$CHOICE
-			computer="O"
-		else
-			player=$CHOICE
-			computer="X"
-		fi
-		switchPlayer=0
-	else
-		echo "Computer win the toss!!!"
-		computerChoice=$((RANDOM % 2))
-        	if [ $computerChoice -eq 1 ]
-		then
-			computer="X"
-			player="O" 
-		else
-			computer="O"
-			player="X"
-		fi
-		switchPlayer=1
-	fi
-	echo "Players choice:$player"
-	echo "Computers choice:$computer"
-	echo "Board:"
-	board
+        R=$((RANDOM % 2))
+        if [ $R -eq 1 ]
+        then
+                echo "Player win the toss!!!"
+                read -p "Enter letter X or O:" CHOICE
+                if [[ "$CHOICE" == "X" ]]
+                then
+                        player=$CHOICE
+                        computer="O"
+                else
+                        player=$CHOICE
+                        computer="X"
+                fi
+                switchPlayer=0
+        else
+                echo "Computer win the toss!!!"
+                computerChoice=$((RANDOM % 2))
+                if [ $computerChoice -eq 1 ]
+                then
+                        computer="X"
+                        player="O"
+                else
+                        computer="O"
+                        player="X"
+                fi
+                switchPlayer=1
+        fi
+        echo "Players choice:$player"
+        echo "Computers choice:$computer"
+        echo "Board:"
+        board
 }
 toss
 
 function winCondition() {
-	if ([[ "${position[1]}" == "$val" ]] && [[ "${position[2]}" == "$val" ]] && [[ "${position[3]}" == "$val" ]]) ||
-	   ([[ "${position[4]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[6]}" == "$val" ]]) ||
-	   ([[ "${position[7]}" == "$val" ]] && [[ "${position[8]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
-	   ([[ "${position[1]}" == "$val" ]] && [[ "${position[4]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]]) ||
-	   ([[ "${position[2]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[8]}" == "$val" ]]) ||
-	   ([[ "${position[3]}" == "$val" ]] && [[ "${position[6]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
-	   ([[ "${position[1]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
-	   ([[ "${position[3]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]]) 
-	then
-		if [[ "$val" == "$player" ]]
-		then
-			echo "Player wins..."
-			exit
-		elif [[ "$val" == "$computer" ]]
-		then
-			echo "Computer wins..."
-			exit
-		else
-			echo "No one wins..."
-			exit
-		fi
-	fi
+        for (( j=1 ; j<=7 ; j=$(($j+3)) ))
+        do
+                if ([[ "${position[$j]}" == "$val" ]] && [[ "${position[$(($j+1))]}" == "$val" ]] && [[ "${position[$(($j+2))]}" == "$val" ]])
+                then
+                        echo "$val wins..."
+                        exit
+                fi
+        done
+        for (( i=1 ; i<=3 ; i++ ))
+        do
+                if ([[ "${position[$i]}" == "$val" ]] && [[ "${position[$(($i+3))]}" == "$val" ]] && [[ "${position[$(($i+6))]}" == "$val" ]])
+                then
+                        echo "$val wins..."
+                        exit
+                fi
+        done
+        if ([[ "${position[1]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]]) ||
+           ([[ "${position[3]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]])
+        then
+                echo "$val wins..."
+                exit
+        fi
 }
 
 function firstCondition() {
-        if ([[ "${position[2]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ]) ||
-	   ([[ "${position[4]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ]) ||
-	   ([[ "${position[5]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[1]} -eq 0 ])
+        for (( j=1 ; j<=7 ; j=$(($j+3)) ))
+        do
+                if ([[ "${position[$j]}" == "$val" ]] && [[ "${position[$(($j+1))]}" == "$val" ]] && [ ${arr[$(($j+2))]} -eq 0 ])
+                then
+                        computer_pos=$(($j+2))
+                        counter=1
+                fi
+                if ([[ "${position[$(($j+1))]}" == "$val" ]] && [[ "${position[$(($j+2))]}" == "$val" ]] && [ ${arr[$j]} -eq 0 ])
+                then
+                        computer_pos=$j
+                        counter=1
+                fi
+                if ([[ "${position[$j]}" == "$val" ]] && [[ "${position[$(($j+2))]}" == "$val" ]] && [ ${arr[$(($j+1))]} -eq 0 ])
+                then
+                        computer_pos=$(($j+1))
+                        counter=1
+                fi
+        done
+        for (( i=1 ; i<=3 ; i++ ))
+        do
+                if ([[ "${position[$i]}" == "$val" ]] && [[ "${position[$(($i+3))]}" == "$val" ]] && [ ${arr[$(($i+6))]} -eq 0 ])
+                then
+                        computer_pos=$(($i+6))
+                        counter=1
+                fi
+                if ([[ "${position[$i]}" == "$val" ]] && [[ "${position[$(($i+6))]}" == "$val" ]] && [ ${arr[$(($i+3))]} -eq 0 ])
+                then
+                        computer_pos=$(($i+3))
+                        counter=1
+                fi
+                if ([[ "${position[$(($i+6))]}" == "$val" ]] && [[ "${position[$(($i+3))]}" == "$val" ]] && [ ${arr[$i]} -eq 0 ])
+                then
+                        computer_pos=$i
+                        counter=1
+                fi
+        done
+        if (( counter == 0 ))
         then
-	     computer_pos=1
-        elif ([[ "${position[5]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[2]} -eq 0 ]) ||
-	     ([[ "${position[1]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[2]} -eq 0 ])
-		then
-			computer_pos=2
-		elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[2]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ]) ||
-	             ([[ "${position[5]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ]) ||
-        	     ([[ "${pos[6]}" == "$computer" ]] && [[ "${pos[9]}" == "$computer" ]] && [ ${arr[3]} -eq 0 ])
-			then
-				computer_pos=3
-			elif ([[ "${position[5]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[4]} -eq 0 ]) ||
-			     ([[ "${position[1]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[4]} -eq 0 ])
-        			then
-					computer_pos=4
-				elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
-                     		     ([[ "${position[2]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
-                     		     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[7]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ]) ||
-				     ([[ "${position[4]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[5]} -eq 0 ])
-					then
-						computer_pos=5
-					elif ([[ "${position[4]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[6]} -eq 0 ]) ||
-					     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[6]} -eq 0 ])
-						then
-							computer_pos=6
-						elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[4]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ]) ||
-                   				     ([[ "${position[5]}" == "$computer" ]] && [[ "${position[3]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ]) ||
-                  				     ([[ "${position[8]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[7]} -eq 0 ])
-							then
-								computer_pos=7
-							elif ([[ "${position[2]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[8]} -eq 0 ]) ||
-							     ([[ "${position[7]}" == "$computer" ]] && [[ "${position[9]}" == "$computer" ]] && [ ${arr[8]} -eq 0 ])
-								then
-									computer_pos=8
-								elif ([[ "${position[1]}" == "$computer" ]] && [[ "${position[5]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ]) ||
-                                                   		     ([[ "${position[7]}" == "$computer" ]] && [[ "${position[8]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ]) ||
-                                                 		     ([[ "${position[3]}" == "$computer" ]] && [[ "${position[6]}" == "$computer" ]] && [ ${arr[9]} -eq 0 ])
-								then
-									computer_pos=9
-								else
-									secondCondition
-	fi
+                daigonalWinCondition
+        fi
 }
 
-function secondCondition() {
-        if ([[ "${position[2]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[1]} -eq 0 ]) ||
-	   ([[ "${position[4]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[1]} -eq 0 ]) ||
-	   ([[ "${position[5]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[1]} -eq 0 ])
-	        then
-			computer_pos=1
-        	elif ([[ "${position[5]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[2]} -eq 0 ]) ||
-	     	([[ "${position[1]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[2]} -eq 0 ])
-			then
-				computer_pos=2
-			elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[2]}" == "$player" ]] && [ ${arr[3]} -eq 0 ]) ||
-	        	([[ "${position[5]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[3]} -eq 0 ]) ||
-        	     	([[ "${position[6]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[3]} -eq 0 ])
-				then
-					computer_pos=3
-				elif ([[ "${position[5]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[4]} -eq 0 ]) ||
-			     	([[ "${position[1]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[4]} -eq 0 ])
-        				then
-						computer_pos=4
-					elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
-                     		     	([[ "${position[2]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
-                     		     	([[ "${position[3]}" == "$player" ]] && [[ "${position[7]}" == "$player" ]] && [ ${arr[5]} -eq 0 ]) ||
-				     	([[ "${position[4]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[5]} -eq 0 ])
-						then
-							computer_pos=5
-						elif ([[ "${position[4]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[6]} -eq 0 ]) ||
-					     	([[ "${position[3]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[6]} -eq 0 ])
-							then
-								computer_pos=6
-							elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[4]}" == "$player" ]] && [ ${arr[7]} -eq 0 ]) ||
-                   				     	([[ "${position[5]}" == "$player" ]] && [[ "${position[3]}" == "$player" ]] && [ ${arr[7]} -eq 0 ]) ||
-                  				     	([[ "${position[8]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[7]} -eq 0 ])
-								then
-									computer_pos=7
-								elif ([[ "${position[2]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[8]} -eq 0 ]) ||
-							     	([[ "${position[7]}" == "$player" ]] && [[ "${position[9]}" == "$player" ]] && [ ${arr[8]} -eq 0 ])
-									then
-										computer_pos=8
-									elif ([[ "${position[1]}" == "$player" ]] && [[ "${position[5]}" == "$player" ]] && [ ${arr[9]} -eq 0 ]) ||
-                                                    		     	([[ "${position[7]}" == "$player" ]] && [[ "${position[8]}" == "$player" ]] && [ ${arr[9]} -eq 0 ]) ||
-                                                 		     	([[ "${position[3]}" == "$player" ]] && [[ "${position[6]}" == "$player" ]] && [ ${arr[9]} -eq 0 ])
-										then
-											computer_pos=9
-										else
-												corner
-	fi
+function daigonalWinCondition() {
+        if ([[ "${position[1]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]] && [ ${arr[5]} -eq 0 ]) ||
+           ([[ "${position[3]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]] && [ ${arr[5]} -eq 0 ])
+                then
+                        computer_pos=5
+                        counter=1
+                elif ([[ "${position[9]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [ ${arr[1]} -eq 0 ])
+                        then
+                                computer_pos=1
+                                counter=1
+                        elif ([[ "${position[1]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [ ${arr[9]} -eq 0 ])
+                                then
+                                        computer_pos=9
+                                        counter=1
+                                elif ([[ "${position[3]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [ ${arr[7]} -eq 0 ])
+                                        then
+                                                computer_pos=7
+                                                counter=1
+                                        elif ([[ "${position[7]}" == "$val" ]] && [[ "${position[5]}" == "$val" ]] && [ ${arr[3]} -eq o ])
+                                                then
+                                                        computer_pos=3
+                                                        counter=1
+                                                fi
+        if ([[ counter -eq 0 ]] && [[ block -eq 0 ]])
+        then
+                block=1
+                blockCondition
+        fi
+}
+
+function blockCondition(){
+        val=$player
+        firstCondition
+        if (( counter == 0 ))
+        then
+                corner
+        fi
 }
 
 function corner(){
 if [ ${arr[1]} -eq 0 ]
-	then
-		computer_pos=1
-	elif [ ${arr[3]} -eq 0 ]
-		then
-			computer_pos=3
-		elif [ ${arr[7]} -eq 0 ]
-			then
-				computer_pos=7
-			elif [ ${arr[9]} -eq 0 ]
-				then
-					computer_pos=9
-				elif [ ${arr[5]} -eq 0 ]
-					then
-						computer_pos=5
-					else
-						while [ ${arr[$computer_pos]} -ne 0 ] 
-			                        do
-                        			        computer_pos=$(((RANDOM % 9) + 1))
-                       				done
+        then
+                computer_pos=1
+        elif [ ${arr[3]} -eq 0 ]
+                then
+                        computer_pos=3
+                elif [ ${arr[7]} -eq 0 ]
+                        then
+                                computer_pos=7
+                        elif [ ${arr[9]} -eq 0 ]
+                                then
+                                        computer_pos=9
+                                elif [ ${arr[5]} -eq 0 ]
+                                        then
+                                                computer_pos=5
+                                        else
+                                                while [ ${arr[$computer_pos]} -ne 0 ]
+                                                do
+                                                        computer_pos=$(((RANDOM % 9) + 1))
+                                                done
 fi
 }
-
 
 count=0
 while [ $count -lt 9 ]
 do
-	if [ $switchPlayer -eq 0 ]
-	then
-		switchPlayer=1
-		read -p "Enter the position:" pos
-		if [ ${arr[$pos]} -eq 0 ]
-		then
-			position[$pos]=$player
-			val=$player
-			board
-			winCondition
-			echo "           "
-			echo "           "
-                	arr[$pos]=1
-		else
-			board
-			while [ ${arr[$pos]} -ne 0 ]
-			do
-				read -p "Enter available position:" pos
-				position[$pos]=$player
-				val=$player
-				board
-				winCondition
-				echo "           "
-				echo "           "
-				arr[$pos]=1
-			done
-		fi
-	else
-		switchPlayer=0
-		firstCondition
-		echo "Computer choose : $computer_pos"
-		position[$computer_pos]=$computer
-		val=$computer
-		board
-		winCondition
-		echo "           "
-		echo "           "
-		arr[$computer_pos]=1
-	fi
-	count=$(($count + 1))
+        if [ $switchPlayer -eq 0 ]
+        then
+                switchPlayer=1
+                read -p "Enter the position:" pos
+                if [ ${arr[$pos]} -eq 0 ]
+                then
+                        position[$pos]=$player
+                        val=$player
+                        board
+                        winCondition
+                        echo "           "
+                        echo "           "
+                        arr[$pos]=1
+                else
+                        board
+                        while [ ${arr[$pos]} -ne 0 ]
+                        do
+                                read -p "Enter available position:" pos
+                        done
+                        position[$pos]=$player
+                        val=$player
+                        board
+                        winCondition
+                        echo "           "
+                        echo "           "
+                        arr[$pos]=1
+                fi
+        else
+                switchPlayer=0
+                val=$computer
+                counter=0
+                block=0
+                firstCondition
+                echo "Computer choose : $computer_pos"
+                position[$computer_pos]=$computer
+                board
+                winCondition
+                echo "           "
+                echo "           "
+                arr[$computer_pos]=1
+        fi
+        count=$(($count + 1))
 done
