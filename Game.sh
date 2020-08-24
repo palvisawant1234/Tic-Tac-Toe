@@ -140,10 +140,8 @@ function firstCondition() {
         fi
 }
 
-<<<<<<< HEAD
-=======
 #check daigonal winning contions
->>>>>>> UC13-Minimizing_the_code
+
 function daigonalWinCondition() {
         if ([[ "${position[1]}" == "$val" ]] && [[ "${position[9]}" == "$val" ]] && [ ${arr[5]} -eq 0 ]) ||
            ([[ "${position[3]}" == "$val" ]] && [[ "${position[7]}" == "$val" ]] && [ ${arr[5]} -eq 0 ])
@@ -172,7 +170,6 @@ function daigonalWinCondition() {
                 block=1
                 blockCondition
         fi
-<<<<<<< HEAD
 }
 
 function blockCondition(){
@@ -182,8 +179,6 @@ function blockCondition(){
         then
                 corner
         fi
-=======
->>>>>>> UC13-Minimizing_the_code
 }
 
 #blocking condition if player is winning
@@ -221,10 +216,7 @@ if [ ${arr[1]} -eq 0 ]
 fi
 }
 
-<<<<<<< HEAD
-=======
 #start of main code
->>>>>>> UC13-Minimizing_the_code
 count=0
 while [ $count -lt 9 ]
 do
